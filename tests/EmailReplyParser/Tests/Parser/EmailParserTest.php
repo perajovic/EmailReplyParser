@@ -223,6 +223,33 @@ EMAIL
         $this->assertTrue($fragments[1]->isQuoted());
     }
 
+    public function testEmailThreadPreservesNewLines()
+    {
+        $email     = $this->parser->parse($this->getFixtures('email_thread.txt'));
+        $fragments = $email->getFragments();
+
+        $this->assertEquals(<<<EMAIL
+On Nov 21, 2014, at 10:18, John Doe <john@doe123.com> wrote:
+
+> Ok. Thanks.
+>
+> On Nov 21, 2014, at 9:26, Jim Beam <jim@beam123.com> wrote:
+>
+>>> On Nov 20, 2014, at 11:03 AM, John Doe <john@doe123.com> wrote:
+>>>
+>>> if you take a look at a short video from attachment, why full-typed filename does not stay in CMD+T pane?
+>>> When I type last character, it is not shown anymore.
+>>
+>> We think we’ve tracked down the cause of this issue, write back if you see the issue after the next update. (Which will be out shortly.)
+>>
+>> --
+>> Jim Beam – Acme Corp
+>>
+>
+EMAIL
+        , (string) $fragments[1]);
+    }
+
     /**
      * @dataProvider getDateFormats
      */
